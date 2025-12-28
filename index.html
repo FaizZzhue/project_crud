@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist</title>
+
+  <link rel="stylesheet" href="assets/style/style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  
+  <script defer src="assets/scripts/main.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <div class="app">
+      <div class="header">
+        <div class="titleWrap">
+          <div class="titleRow">
+            <div class="title">Wishlist</div>
+          </div>
+        </div>
+        <div class="headerRight">
+          <div class="search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input id="searchInput" type="text" placeholder="Cari barang..." />
+          </div>
+          <button class="btn btnPrimary" id="addBtn" title="Tambah barang">
+            <span style="font-size:18px;line-height:0;">＋</span> Tambah Barang
+          </button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="chips" role="tablist" aria-label="Filter status">
+          <button type="button" role="tab" aria-selected="true" class="chip active" data-filter="all">Semua</button>
+          <button type="button" role="tab" aria-selected="false" class="chip" data-filter="unbought">Belum terbeli</button>
+          <button type="button" role="tab" aria-selected="false" class="chip" data-filter="bought">Sudah terbeli</button>
+        </div>
+
+        <div class="controls">
+          <select id="sortSelect" aria-label="Urutkan">
+            <option value="newest">Sort: Terbaru</option>
+            <option value="priority">Sort: Prioritas</option>
+            <option value="name">Sort: Nama A–Z</option>
+          </select>
+          <button class="btn" id="resetBtn">Reset</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="emptyState" class="empty" style="display:none;">
+          <div class="emptyIcon" aria-hidden="true">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+              <path d="M7 7h13v10a3 3 0 01-3 3H7a3 3 0 01-3-3V7z" stroke="currentColor" stroke-width="2" opacity=".7"/>
+              <path d="M7 7l-2-3h12l3 3" stroke="currentColor" stroke-width="2" opacity=".7"/>
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Wishlist kamu masih kosong</h3>
+          <p>Tambahkan barang pertama biar wishlist-nya punya masa depan (nggak cuma angan-angan).</p>
+          <button class="btn btnPrimary" id="emptyAddBtn">
+            <span style="font-size:18px;line-height:0;">＋</span> Tambah Barang
+          </button>
+        </div>
+
+        <div id="grid" class="grid"></div>
+          <div class="subtitle" id="statsText">0 item • 0 sudah terbeli</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalHeader">
+        <h3 id="modalTitle">Tambah Barang</h3>
+        <button class="iconBtn" id="closeModalBtn" aria-label="Tutup">
+          ✕
+        </button>
+      </div>
+
+      <div class="modalBody">
+        <div class="error" id="formError">Nama barang wajib diisi (min 2 karakter).</div>
+
+        <div class="field">
+          <label for="nameInput">Nama barang *</label>
+          <input id="nameInput" type="text" placeholder="Contoh: Mechanical Keyboard" />
+          <div class="hint">Wajib diisi.</div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="priorityInput">Prioritas</label>
+            <select id="priorityInput">
+              <option value="high">High</option>
+              <option value="medium" selected>Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="priceInput">Harga (opsional)</label>
+            <input id="priceInput" type="number" min="0" placeholder="Contoh: 1200000" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notesInput">Catatan (opsional)</label>
+          <textarea id="notesInput" placeholder="Contoh: cari yang noise cancelling..."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="urlInput">Link (opsional)</label>
+          <input id="urlInput" type="url" placeholder="https://..." />
+        </div>
+
+        <div class="field" id="boughtField" style="display:none;">
+          <label>Status</label>
+          <label style="display:flex; gap:10px; align-items:center; font-weight:800;">
+            <input id="boughtInput" type="checkbox" />
+            Tandai sebagai sudah terbeli
+          </label>
+        </div>
+      </div>
+
+      <div class="modalFooter">
+        <button class="btn" id="cancelBtn">Batal</button>
+        <button class="btn btnPrimary" id="saveBtn">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">OK</div>
+</body>
+</html>
