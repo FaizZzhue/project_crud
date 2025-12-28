@@ -212,7 +212,6 @@ function makeCard(item) {
         toggleBought(item.id);
     });
 
-    // meta
     const meta = document.createElement("div");
     meta.classList.add("meta");
 
